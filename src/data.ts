@@ -20,7 +20,7 @@ export interface Menu {
 }
 
 function runOnDb<T>(func: (db: Database.Database) => T) {
-  const db = Database("db.sqlite");
+  const db = Database(process.env["OVERCLICKED_DB_DIR"] + "/db.sqlite");
   db.exec(fs.readFileSync("migration.sql").toString());
   const res = db.transaction(func)(db);
   db.close();
