@@ -111,8 +111,8 @@ export default function Home({
                 Croques Sold
               </p>
               <span className="button-span">
-                <a href={`/${r}`}>Register</a>
-                <a href={`/${r}/public`}>Public</a>
+                <Link href={`./admin/${r}`}>Register</Link>
+                <Link href={`./admin/${r}/public`}>Public</Link>
               </span>
             </div>
           ))}

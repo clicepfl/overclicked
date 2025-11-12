@@ -121,7 +121,7 @@ export default function Page() {
         <div className="register-orders">
           <h1>Register {register}</h1>
 
-          <Link className="admin-button" href="/">
+          <Link className="admin-button" href="./">
             Admin
           </Link>
 
