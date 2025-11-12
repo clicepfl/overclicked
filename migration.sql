@@ -17,32 +17,32 @@ CREATE TABLE IF NOT EXISTS menus(
 INSERT INTO menus(id, name, description, totalStocks, stocks)
 VALUES(
         0,
-        'Temptation',
-        'Tomates séchées, Mozza, Pesto',
-        145,
-        145
+        'Spicy Red',
+        'Champigons, Oignons frits, Sambal oelek',
+        75,
+        75
     ) ON CONFLICT DO NOTHING;
 INSERT INTO menus(id, name, description, totalStocks, stocks)
 VALUES(
         1,
-        'Chaos',
-        'Chèvre, Miel',
-        165,
-        165
+        'Pesto Green',
+        'Tomates séchées, Mozza, Pesto',
+        75,
+        75
     ) ON CONFLICT DO NOTHING;
 INSERT INTO menus(id, name, description, totalStocks, stocks)
 VALUES(
         2,
-        'Oblivion',
-        'Champigons, Oignons caramelisés, Pesto',
-        95,
-        95
+        'Goaty Blue',
+        'Chèvre, Miel',
+        75,
+        75
     ) ON CONFLICT DO NOTHING;
 INSERT INTO menus(id, name, description, totalStocks, stocks)
 VALUES(
         3,
-        'Craving',
+        'Crunchy Ovo',
         'Ovomaltine',
-        95,
-        95
+        75,
+        75
     ) ON CONFLICT DO NOTHING;
