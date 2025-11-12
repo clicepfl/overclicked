@@ -39,21 +39,23 @@ export default function Public() {
         backgroundRepeat: "no-repeat",
       }}
     >
-      <div className="menu">
-          <h1>Croques</h1>
-        {menus.map((m, i) => {
-          const menuItem = (
-            <div key={i} className="menu-item">
-              <h2>{m.name}</h2>
-              <p>{m.description}</p>
-            </div>
-          );
-          if (m.stocks < 5) {
-            return <s key={i}>{menuItem}</s>;
-          } else {
-            return menuItem;
-          }
-        })}
+      <div className="menu-section">
+        <h1>Croques</h1>
+        <div className="menu">
+          {menus.map((m, i) => {
+            const menuItem = (
+              <div key={i} className="menu-item">
+                <h2>{m.name}</h2>
+                <p>{m.description}</p>
+              </div>
+            );
+            if (m.stocks < 5) {
+              return <s key={i}>{menuItem}</s>;
+            } else {
+              return menuItem;
+            }
+          })}
+        </div>
       </div>
 
       <div className="ready-section">

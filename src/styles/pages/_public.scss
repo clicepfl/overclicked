@@ -2,8 +2,8 @@
   font-family: var(--font-panchang), sans-serif;
   overflow: hidden;
   display: flex;
-  gap: 2em;
-  padding: 3rem;
+  gap: 8rem;
+  padding: 4rem;
 
   width: 100%;
   height: 100vh;
@@ -18,13 +18,20 @@
     text-transform: uppercase;
   }
 
-  .menu {
-    h2 {
-      font-weight: 600;
-      text-transform: uppercase;
-    }
-    p {
-      line-height: 1.1em;
+  .menu-section {
+    flex: 1 1 50%;
+    .menu {
+      display: flex;
+      flex-direction: column;
+      gap: 1em;
+
+      h2 {
+        font-weight: 600;
+        text-transform: uppercase;
+      }
+      p {
+        line-height: 1.1em;
+      }
     }
   }
 
