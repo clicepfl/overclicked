@@ -1,5 +1,6 @@
 "use client";
 
+import { Slide } from "react-toastify";
 import MenuSelect from "@/components/MenuSelect";
 import OrderStatus from "@/components/OrderStatus";
 import {
@@ -85,15 +86,28 @@ export default function Page() {
           <button
             onClick={async () => {
               try {
+                const totalItems = currentOrder.reduce(
+                  (sum, count) => sum + count,
+                  0
+                );
+                if (totalItems === 0) {
+                  toast.warning(
+                    "Cannot send an empty order.",
+                    {
+                      autoClose: 1500,
+                      closeButton: false,
+                    }
+                  );
+                  return;
+                }
+
                 await addOrder(currentOrder, register);
                 toast.success("Order sent!", {
-                  position: "top-center",
-                  autoClose: 3000,
+                  autoClose: 1500,
                   closeButton: false,
                 });
               } catch {
                 toast.error("Error: no more stocks for selected items", {
-                  position: "top-center",
                   autoClose: false,
                   closeButton: true,
                 });
@@ -135,7 +149,11 @@ export default function Page() {
           </div>
         </div>
       </div>
-      <ToastContainer closeButton={ToastCloseButton} />
+      <ToastContainer
+        closeButton={ToastCloseButton}
+        transition={Slide}
+        position="top-center"
+      />
     </>
   );
 }
@@ -154,7 +172,6 @@ function RegisterOrderStatus({ o, menus }: { o: Order; menus: Menu[] }) {
           ? markAsServed
           : (id: number) => {
               toast.warning("Are you sure you want to cancel this order?", {
-                position: "top-center",
                 autoClose: false,
                 closeButton: true,
                 onClose: (closedByUser) => {
@@ -162,11 +179,10 @@ function RegisterOrderStatus({ o, menus }: { o: Order; menus: Menu[] }) {
                     cancelOrder(id);
                     setTimeout(() => {
                       toast.success("Order canceled.", {
-                        position: "top-center",
-                        autoClose: 3000,
+                        autoClose: 1500,
                         closeButton: false,
                       });
-                    }, 300);
+                    }, 600);
                   }
                 },
               });
