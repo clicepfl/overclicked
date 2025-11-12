@@ -16,6 +16,7 @@ import { delay } from "@/utils";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
 
 export default function Page() {
   const params = useParams();
@@ -42,91 +43,147 @@ export default function Page() {
 
   const [currentOrder, setCurrentOrder] = useState(new Array(4).fill(0));
 
-  return (
-    <div className="register">
-      <div className="register-select">
-        <div className="menu-selections">
-          {menus.map((m, i) => (
-            <MenuSelect
-              key={i}
-              menu={m}
-              numSelects={currentOrder[i]}
-              remaining={m.stocks}
-              addSelect={() => {
-                const newOrder = [...currentOrder];
-                newOrder[i] += 1;
-                setCurrentOrder(newOrder);
-              }}
-              removeSelect={() => {
-                const newOrder = [...currentOrder];
-                newOrder[i] -= 1;
-                setCurrentOrder(newOrder);
-              }}
-            />
-          ))}
-        </div>
-        <button
-          onClick={async () => {
-            try {
-              await addOrder(currentOrder, register);
-            } catch {
-              alert(
-                "ERROR SENDING ORDER ! There are no more stocks available for the selected items."
-              );
-            }
-            setCurrentOrder(new Array(menus.length).fill(0));
-          }}
-        >
-          Send Order
-        </button>
-      </div>
-      <div className="register-orders">
-        <h1>Register {register}</h1>
+  const activeOrders = orders.filter(
+    (o) => o.register === register && !o.canceled
+  );
 
-        <Link className="admin-button" href="/">
-          Admin
-        </Link>
-        {menus.length == 0 ? (
-          <></>
-        ) : (
-          orders
-            .filter((o) => o.register === register && !o.canceled)
-            .sort((a, b) => {
-              if (a.served !== b.served) return a.served ? 1 : -1;
-              if (a.prepared !== b.prepared) return a.prepared ? -1 : 1;
-              return b.id - a.id;
-            })
-            .map((o) => (
-              <OrderStatus
-                key={o.id}
-                menuItems={menus}
-                order={o}
-                buttonText={
-                  o.served ? "Undo Serve" : o.prepared ? "Serve" : "Cancel"
-                }
-                buttonAction={
-                  o.served
-                    ? markAsNotServed
-                    : o.prepared
-                    ? markAsServed
-                    : (id: number) => {
-                        if (
-                          confirm("Are you sure you want to cancel this order?")
-                        ) {
-                          cancelOrder(id);
-                        }
-                      }
-                }
-                actionAvailable={true}
-                actionIsDanger={!o.prepared && !o.served}
-                showDetails={false}
-                showRegister={false}
-                archived={o.served}
-                statusIcon={o.served ? "✅" : o.prepared ? "🥪❗" : "⏳"}
+  const readyToServeOrders = activeOrders
+    .filter((o) => o.prepared || o.served)
+    .sort((a, b) => {
+      if (a.served !== b.served) return a.served ? 1 : -1;
+      return b.id - a.id;
+    });
+
+  const inPreparationOrders = activeOrders
+    .filter((o) => !o.prepared && !o.served)
+    .sort((a, b) => b.id - a.id);
+
+  return (
+    <>
+      <div className="register">
+        <div className="register-select">
+          <div className="menu-selections">
+            {menus.map((m, i) => (
+              <MenuSelect
+                key={i}
+                menu={m}
+                numSelects={currentOrder[i]}
+                remaining={m.stocks}
+                addSelect={() => {
+                  const newOrder = [...currentOrder];
+                  newOrder[i] += 1;
+                  setCurrentOrder(newOrder);
+                }}
+                removeSelect={() => {
+                  const newOrder = [...currentOrder];
+                  newOrder[i] -= 1;
+                  setCurrentOrder(newOrder);
+                }}
               />
-            ))
-        )}
+            ))}
+          </div>
+          <button
+            onClick={async () => {
+              try {
+                await addOrder(currentOrder, register);
+                toast.success("Order sent!", {
+                  position: "top-center",
+                  autoClose: 3000,
+                  closeButton: false,
+                });
+              } catch {
+                toast.error("Error: no more stocks for selected items", {
+                  position: "top-center",
+                  autoClose: false,
+                  closeButton: true,
+                });
+              }
+              setCurrentOrder(new Array(menus.length).fill(0));
+            }}
+          >
+            Send Order
+          </button>
+        </div>
+        <div className="register-orders">
+          <h1>Register {register}</h1>
+
+          <Link className="admin-button" href="/">
+            Admin
+          </Link>
+
+          <div className="register-orders-cols">
+            <div className="register-orders-col">
+              <h2>In Preparation</h2>
+              {menus.length == 0 ? (
+                <></>
+              ) : (
+                inPreparationOrders.map((o) => (
+                  <RegisterOrderStatus key={o.id} o={o} menus={menus} />
+                ))
+              )}
+            </div>
+            <div className="register-orders-col">
+              <h2>Ready to Serve</h2>
+              {menus.length == 0 ? (
+                <></>
+              ) : (
+                readyToServeOrders.map((o) => (
+                  <RegisterOrderStatus key={o.id} o={o} menus={menus} />
+                ))
+              )}
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
+      <ToastContainer closeButton={ToastCloseButton} />
+    </>
   );
 }
+
+function RegisterOrderStatus({ o, menus }: { o: Order; menus: Menu[] }) {
+  return (
+    <OrderStatus
+      key={o.id}
+      menuItems={menus}
+      order={o}
+      buttonText={o.served ? "Undo Serve" : o.prepared ? "Serve" : "Cancel"}
+      buttonAction={
+        o.served
+          ? markAsNotServed
+          : o.prepared
+          ? markAsServed
+          : (id: number) => {
+              toast.warning("Are you sure you want to cancel this order?", {
+                position: "top-center",
+                autoClose: false,
+                closeButton: true,
+                onClose: (closedByUser) => {
+                  if (closedByUser) {
+                    cancelOrder(id);
+                    setTimeout(() => {
+                      toast.success("Order canceled.", {
+                        position: "top-center",
+                        autoClose: 3000,
+                        closeButton: false,
+                      });
+                    }, 300);
+                  }
+                },
+              });
+            }
+      }
+      actionAvailable={true}
+      actionIsDanger={!o.prepared && !o.served}
+      showDetails={false}
+      showRegister={false}
+      archived={o.served}
+      statusIcon={o.served ? "✅" : o.prepared ? "🥪❗" : "⏳"}
+    />
+  );
+}
+
+const ToastCloseButton = ({ closeToast }: { closeToast: () => void }) => (
+  <button className="danger" onClick={closeToast}>
+    OK
+  </button>
+);
