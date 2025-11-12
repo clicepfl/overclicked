@@ -12,6 +12,7 @@ import {
 } from "@/data";
 import { delay } from "@/utils";
 import { useEffect, useState } from "react";
+import { Slide, toast, ToastContainer } from "react-toastify";
 
 export default function Page() {
   const [orders, setOrders] = useState([] as Order[]);
@@ -58,6 +59,10 @@ export default function Page() {
               </p>
               <button
                 onClick={() => {
+                  toast.success(`Added 5 to ${m.name} stocks!`, {
+                    autoClose: 1500,
+                    closeButton: false,
+                  });
                   addMenuStocks(i, 5);
                 }}
               >
@@ -77,12 +82,19 @@ export default function Page() {
               menuItems={menus}
               order={o}
               buttonText="Prepared"
-              buttonAction={markAsPrepared}
+              buttonAction={(id) => {
+                toast.success(`Order ${id} marked as prepared!`, {
+                  autoClose: 1500,
+                  closeButton: false,
+                });
+                markAsPrepared(id);
+              }}
               showDetails={false}
             />
           ))
         )}
       </div>
+      <ToastContainer transition={Slide} position="top-center" />
     </div>
   );
 }
