@@ -24,3 +24,52 @@ Open http://localhost:3000 to view it in the browser.
 - [Next.js](https://nextjs.org/)
 - [TypeScript](https://www.typescriptlang.org/)
 - [SCSS](https://sass-lang.com/)
+
+## Features
+
+This app includes the following views:
+
+- Admin Dashboard: Overview of all events and their order statuses.
+- Preparation View: Interface for staff to prepare orders and manage inventory.
+- Register View: Interface for staff to take orders and serve customers.
+- Public View: Customers can see the menu and ready orders.
+
+### Admin Dashboard
+
+![dashboard](./.github/images/admin.png)
+
+The Admin Dashboard provides:
+
+- Statistics on orders (total, prepared, served)
+- Inventory status (stocks left)
+- Register activity (orders taken per register)
+- All orders listed with their statuses
+
+### Preparation View
+
+![preparation](./.github/images/preparation.png)
+
+The Preparation View allows staff to:
+
+- See incoming orders in real time
+- Mark orders as prepared
+- Add more stock for items
+
+### Register View
+
+![register](./.github/images/register.png)
+
+The Register View allows staff to:
+
+- Take new orders from customers
+- Cancel orders if needed
+- Mark orders as served
+
+### Public View
+
+![public](./.github/images/public.png)
+
+The Public View allows customers to:
+
+- View the menu with available items
+- See orders that are ready for pickup
