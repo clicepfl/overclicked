@@ -29,7 +29,7 @@ export default function OrderStatus({
       <div>
         <h2>
           <div>{`Order ${order.id}`}</div>
-          <div>{statusIcon}</div>
+          <span className="status-icon">{statusIcon}</span>
         </h2>
         {showRegister ? <p>Register {order.register}</p> : null}
       </div>

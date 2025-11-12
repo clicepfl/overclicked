@@ -35,4 +35,9 @@
       }
     }
   }
+
+  .status-icon {
+    // prevent wrap of text
+    text-wrap: nowrap;
+  }
 }
