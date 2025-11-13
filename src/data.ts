@@ -19,8 +19,11 @@ export interface Menu {
   stocks: number;
 }
 
+const DB_PATH = process.env["OVERCLICKED_DB_DIR"] + "/db.sqlite";
+const DB_DOWNLOAD_FILENAME = "overclicked_db_backup.sqlite";
+
 function runOnDb<T>(func: (db: Database.Database) => T) {
-  const db = Database(process.env["OVERCLICKED_DB_DIR"] + "/db.sqlite");
+  const db = Database(DB_PATH);
   db.exec(fs.readFileSync("migration.sql").toString());
   const res = db.transaction(func)(db);
   db.close();
@@ -128,3 +131,54 @@ export const addMenuStocks = async (menu: number, stocks: number) =>
       )
       .run([stocks, stocks, menu])
   );
+
+export const downloadDatabase = async () => {
+  try {
+    if (!fs.existsSync(DB_PATH)) {
+      throw new Error("Database file not found on server.");
+    }
+    const fileBuffer = fs.readFileSync(DB_PATH);
+    const base64Data = fileBuffer.toString("base64");
+
+    return {
+      success: true,
+      data: base64Data,
+      fileName: DB_DOWNLOAD_FILENAME,
+      mimeType: "application/x-sqlite3",
+      error: null,
+    };
+  } catch (e) {
+    console.error("Failed to download database file:", e);
+    return {
+      success: false,
+      data: null,
+      fileName: DB_DOWNLOAD_FILENAME,
+      mimeType: "application/x-sqlite3",
+      error: `Failed to download database: ${
+        e instanceof Error ? e.message : String(e)
+      }`,
+    };
+  }
+};
+
+export const resetDatabase = async () => {
+  try {
+    if (fs.existsSync(DB_PATH)) {
+      // Synchronously delete the file
+      fs.unlinkSync(DB_PATH);
+      return {
+        success: true,
+        message: "Database deleted! It will be recreated on next access",
+      };
+    }
+    return {
+      success: true,
+      message: "Database was already missing",
+    };
+  } catch (e) {
+    console.error("Failed to delete database file:", e);
+    throw new Error(
+      `Failed to reset database: ${e instanceof Error ? e.message : String(e)}`
+    );
+  }
+};
