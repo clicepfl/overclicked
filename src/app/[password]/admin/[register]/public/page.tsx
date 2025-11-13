@@ -4,6 +4,7 @@ import { getMenus, getOrdersToServe, Menu, Order } from "@/data";
 import { delay } from "@/utils";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import backgroundImage from "@public/background.webp";
 
 export default function Public() {
@@ -30,15 +31,19 @@ export default function Public() {
   }, []);
 
   return (
-    <div
-      className="public"
-      style={{
-        backgroundImage: `url(${backgroundImage.src})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-      }}
-    >
+    <div className="public">
+      <Image
+        src={backgroundImage}
+        alt="Background"
+        fill
+        priority
+        placeholder="blur"
+        style={{
+          objectFit: "cover",
+          objectPosition: "center",
+          zIndex: -1,
+        }}
+      />
       <div className="menu-section">
         <h1>Croques</h1>
         <div className="menu">
