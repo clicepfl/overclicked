@@ -59,11 +59,11 @@ export default function Page() {
               </p>
               <button
                 onClick={() => {
+                  addMenuStocks(i, 5);
                   toast.success(`Added 5 to ${m.name} stocks!`, {
                     autoClose: 1500,
                     closeButton: false,
                   });
-                  addMenuStocks(i, 5);
                 }}
               >
                 Add 5 to stock
@@ -83,11 +83,11 @@ export default function Page() {
               order={o}
               buttonText="Prepared"
               buttonAction={(id) => {
+                markAsPrepared(id);
                 toast.success(`Order ${id} marked as prepared!`, {
                   autoClose: 1500,
                   closeButton: false,
                 });
-                markAsPrepared(id);
               }}
               showDetails={false}
             />

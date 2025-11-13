@@ -160,9 +160,21 @@ function RegisterOrderStatus({ o, menus }: { o: Order; menus: Menu[] }) {
       buttonText={o.served ? "Undo Serve" : o.prepared ? "Serve" : "Cancel"}
       buttonAction={
         o.served
-          ? markAsNotServed
+          ? (id: number) => {
+              markAsNotServed(id);
+              toast.warning("Order unserved!", {
+                autoClose: 1500,
+                closeButton: false,
+              });
+            }
           : o.prepared
-          ? markAsServed
+          ? (id: number) => {
+              markAsServed(id);
+              toast.success("Order served!", {
+                autoClose: 1500,
+                closeButton: false,
+              });
+            }
           : (id: number) => {
               const Buttons = ToastButtons({
                 onOk: () => {
@@ -196,7 +208,7 @@ function ToastButtons({
 }: {
   onOk: () => void;
 }): ({ closeToast }: { closeToast: () => void }) => ReactNode {
-  return ({ closeToast }: { closeToast: () => void }) => (
+  const ToastButtonsResult = ({ closeToast }: { closeToast: () => void }) => (
     <>
       <button
         className="danger"
@@ -205,11 +217,12 @@ function ToastButtons({
           closeToast();
         }}
       >
-        OK
+        Yes
       </button>
       <button className="validate" onClick={closeToast}>
-        Cancel
+        No
       </button>
     </>
   );
+  return ToastButtonsResult;
 }
