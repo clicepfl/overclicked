@@ -15,19 +15,22 @@
   .register-select {
     display: flex;
     flex-direction: column;
-
     gap: 2em;
+    flex: 1 1 70%;
 
     .menu-selections {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 2em;
+      grid-auto-rows: 1fr;
+      gap: 1em;
+      height: 100%;
     }
 
     button {
       --button-color: #000550;
       --button-text-color: #fff;
       margin: 0 auto;
+      margin-bottom: 2em; // not too close to bottom edge
       font-size: 1.5rem;
       padding: 1em 5em;
     }
@@ -35,13 +38,26 @@
 
   .register-orders {
     overflow-y: auto;
-    min-width: 25%;
+    flex: 1 1 50%;
     display: flex;
     flex-direction: column;
     gap: 2em;
 
     h1 {
       text-align: center;
+    }
+
+    .register-orders-cols {
+      display: flex;
+      flex-direction: row;
+      gap: 1em;
+
+      .register-orders-col {
+        display: flex;
+        flex-direction: column;
+        gap: 1em;
+        flex: 1;
+      }
     }
   }
 }

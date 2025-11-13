@@ -1,0 +1,29 @@
+// Override react toastify styling
+:root {
+  --toastify-toast-padding: 1.5em;
+  --toastify-text-color-light: var(--button-text-color);
+  --toastify-toast-width: 500px;
+  
+  --toastify-color-info: #007bff;
+  --toastify-color-success: #28a745;
+  --toastify-color-warning: #ffc107;
+  --toastify-color-error: #dc3545;
+
+  --toastify-color-progress-info: var(--toastify-color-info);
+  --toastify-color-progress-success: var(--toastify-color-success);
+  --toastify-color-progress-warning: var(--toastify-color-warning);
+  --toastify-color-progress-error: var(--toastify-color-error);
+
+}
+
+.Toastify__toast {
+  font-size: 1.5rem;
+  word-break: normal;
+  display: flex;
+  gap: .5em !important;
+}
+
+.Toastify__close-button--light {
+  color: var(--button-text-color);
+  opacity: 1;
+}

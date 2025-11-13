@@ -36,3 +36,5 @@ next-env.d.ts
 
 db.json
 db.sqlite
+
+.env

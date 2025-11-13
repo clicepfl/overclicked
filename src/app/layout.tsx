@@ -1,4 +1,5 @@
 import "@/styles/style.scss";
+import Panchang from "./fonts";
 import { Inter } from "next/font/google";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -13,7 +14,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" className={Panchang.variable}>
       <body className={inter.className}>
         <main>{children}</main>
       </body>
