@@ -1,0 +1,28 @@
+.danger-page {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  max-width: 60ch;
+  margin: 4em auto;
+  gap: 1em;
+
+  width: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  h1 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  button {
+    width: 100%;
+  }
+
+  .Toastify__toast--warning {
+    flex-direction: column;
+  }
+}
