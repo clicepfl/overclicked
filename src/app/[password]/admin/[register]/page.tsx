@@ -16,7 +16,7 @@ import {
 import { delay } from "@/utils";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 
 export default function Page() {
@@ -91,13 +91,10 @@ export default function Page() {
                   0
                 );
                 if (totalItems === 0) {
-                  toast.warning(
-                    "Cannot send an empty order.",
-                    {
-                      autoClose: 1500,
-                      closeButton: false,
-                    }
-                  );
+                  toast.warning("Cannot send an empty order.", {
+                    autoClose: 1500,
+                    closeButton: false,
+                  });
                   return;
                 }
 
@@ -149,11 +146,7 @@ export default function Page() {
           </div>
         </div>
       </div>
-      <ToastContainer
-        closeButton={ToastCloseButton}
-        transition={Slide}
-        position="top-center"
-      />
+      <ToastContainer transition={Slide} position="top-center" />
     </>
   );
 }
@@ -171,20 +164,20 @@ function RegisterOrderStatus({ o, menus }: { o: Order; menus: Menu[] }) {
           : o.prepared
           ? markAsServed
           : (id: number) => {
+              const Buttons = ToastButtons({
+                onOk: () => {
+                  cancelOrder(id);
+                  setTimeout(() => {
+                    toast.success("Order canceled.", {
+                      autoClose: 1500,
+                      closeButton: false,
+                    });
+                  }, 600);
+                },
+              });
               toast.warning("Are you sure you want to cancel this order?", {
                 autoClose: false,
-                closeButton: true,
-                onClose: (closedByUser) => {
-                  if (closedByUser) {
-                    cancelOrder(id);
-                    setTimeout(() => {
-                      toast.success("Order canceled.", {
-                        autoClose: 1500,
-                        closeButton: false,
-                      });
-                    }, 600);
-                  }
-                },
+                closeButton: Buttons,
               });
             }
       }
@@ -198,8 +191,25 @@ function RegisterOrderStatus({ o, menus }: { o: Order; menus: Menu[] }) {
   );
 }
 
-const ToastCloseButton = ({ closeToast }: { closeToast: () => void }) => (
-  <button className="danger" onClick={closeToast}>
-    OK
-  </button>
-);
+function ToastButtons({
+  onOk,
+}: {
+  onOk: () => void;
+}): ({ closeToast }: { closeToast: () => void }) => ReactNode {
+  return ({ closeToast }: { closeToast: () => void }) => (
+    <>
+      <button
+        className="danger"
+        onClick={() => {
+          onOk();
+          closeToast();
+        }}
+      >
+        OK
+      </button>
+      <button className="validate" onClick={closeToast}>
+        Cancel
+      </button>
+    </>
+  );
+}

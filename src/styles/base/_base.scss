@@ -60,6 +60,14 @@ button {
     border: none;
   }
 
+  &.validate {
+    --button-color: rgb(39, 177, 1);
+    --button-text-color: #ffffff;
+    background-color: rgba(36, 156, 3);
+    color: #ffffff;
+    border: none;
+  }
+
   &:hover {
     background-color: var(--button-color);
     color: var(--button-text-color);
