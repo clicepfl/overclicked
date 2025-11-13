@@ -19,30 +19,30 @@ VALUES(
         0,
         'Spicy Red',
         'Sambal-oelek, Grilled vegetables (peppers, eggplant, zucchini), Crispy onions',
-        75,
-        75
+        64,
+        64
     ) ON CONFLICT DO NOTHING;
 INSERT INTO menus(id, name, description, totalStocks, stocks)
 VALUES(
         1,
         'Pesto Green',
         'Pesto, Sun-dried tomatoes, Mozzarella',
-        75,
-        75
+        72,
+        72
     ) ON CONFLICT DO NOTHING;
 INSERT INTO menus(id, name, description, totalStocks, stocks)
 VALUES(
         2,
         'Goaty Blue',
         'Goat cheese, Honey',
-        75,
-        75
+        85,
+        85
     ) ON CONFLICT DO NOTHING;
 INSERT INTO menus(id, name, description, totalStocks, stocks)
 VALUES(
         3,
         'Crunchy Ovo',
         'Ovomaltine',
-        75,
-        75
+        72,
+        72
     ) ON CONFLICT DO NOTHING;
