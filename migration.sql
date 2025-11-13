@@ -18,7 +18,7 @@ INSERT INTO menus(id, name, description, totalStocks, stocks)
 VALUES(
         0,
         'Spicy Red',
-        'Sambal-oelek, Grilled vegetables (peppers, eggplant, zucchini), Crispy onions',
+        'Sambal Oelek, Grilled vegetables (peppers, eggplant, zucchini), Crispy onions',
         64,
         64
     ) ON CONFLICT DO NOTHING;

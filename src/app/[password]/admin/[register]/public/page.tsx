@@ -73,7 +73,7 @@ export default function Public() {
               </div>
             ))
           ) : (
-            <p>No orders ready : please wait !</p>
+            <p>No orders ready: please wait!</p>
           )}
         </div>
       </div>
